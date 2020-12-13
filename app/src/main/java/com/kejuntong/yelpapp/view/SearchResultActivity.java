@@ -1,7 +1,11 @@
 package com.kejuntong.yelpapp.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +22,6 @@ import com.kejuntong.yelpapp.model.data.SearchResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +33,12 @@ import static com.kejuntong.yelpapp.view.SearchResultItem.TYPE_CATEGORY_HEADER;
 
 public class SearchResultActivity extends AppCompatActivity implements SearchResultAdapter.ItemClickListener{
 
+    EditText searchTerm;
+    EditText searchLocation;
     RecyclerView recyclerView;
     SearchResultAdapter adapter;
+    Spinner spinner;
+    Button searchButton;
     List<SearchResultItem> data = new ArrayList<>();
 
     @Override
@@ -39,8 +46,11 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        // set up the RecyclerView
+        searchTerm = findViewById(R.id.search_term_input);
+        searchLocation = findViewById(R.id.search_location_input);
         recyclerView = findViewById(R.id.search_result_list);
+        spinner = findViewById(R.id.sort_spinner);
+        searchButton = findViewById(R.id.search_button);
 
         GridLayoutManager manager = new GridLayoutManager(this, 3);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -56,11 +66,15 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         recyclerView.setAdapter(adapter);
 
 
-        try {
-            testCall();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        searchButton.setOnClickListener(v -> {
+            try {
+                testCall(searchTerm.getText().toString(), searchLocation.getText().toString(), spinner.getSelectedItem().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
     }
 
     @Override
@@ -68,14 +82,15 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
     }
 
-    private void testCall() throws IOException {
+    private void testCall(String term, String location, String sortBy) throws IOException {
         YelpFusionApiFactory apiFactory = new YelpFusionApiFactory();
         YelpFusionApi yelpFusionApi = apiFactory.createAPI(getString(R.string.api_key));
 
         Map<String, String> params = new HashMap<>();
 
-        params.put("term", "indian food");
-        params.put("location", "NYC");
+        params.put("term", term);
+        params.put("location", location);
+        params.put("sort_by", sortBy);
 
         Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(params);
 

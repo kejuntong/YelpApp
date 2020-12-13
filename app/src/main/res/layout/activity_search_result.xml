@@ -1,13 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.SearchResultActivity">
+
+    <RelativeLayout
+        android:id="@+id/search_line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/search_term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/search_term"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/search_term_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/search_term"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:layout_toEndOf="@+id/search_term"
+            android:hint="@string/search_term_hint" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_line1">
+
+        <TextView
+            android:id="@+id/search_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/search_location"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/search_location_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/search_location"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:layout_toEndOf="@+id/search_location"
+            android:hint="@string/search_location_hint" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_line3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_line2">
+
+        <TextView
+            android:id="@+id/search_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/search_sort"
+            android:textSize="18sp"/>
+
+        <Spinner
+            android:id="@+id/sort_spinner"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/search_sort"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:entries="@array/sort_arrays"
+            android:prompt="@string/sort_option"
+            android:layout_toEndOf="@+id/search_sort"
+            android:layout_marginStart="5dp" />
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/search_button" />
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_line3"
+        android:layout_marginTop="10dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

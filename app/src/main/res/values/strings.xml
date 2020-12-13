@@ -3,4 +3,20 @@
 
     <!--TODO: need encrypt and obfuscate-->
     <string name="api_key">DPM5KiXHlyfN2pquXd0EaDbDtC2rhc3MHXIshaIdWyAcHLxtY2kt6y88EwGzb-YpWNq2khDtoYLqmasFDvOUOpeyGHNxpxzZIdYpKmkLIl85BCJ2U_3xq5J6SXHVX3Yx</string>
+
+    <string name="search_term">search term: </string>
+    <string name="search_term_hint">please enter search term</string>
+    <string name="search_location">search location: </string>
+    <string name="search_location_hint">optional: please enter a location</string>
+    <string name="search_sort">sort by: </string>
+    <string name="sort_option">choose a sort option</string>
+    <string name="search_button">search</string>
+
+    <string-array name="sort_arrays">
+        <item>best_match</item>
+        <item>rating</item>
+        <item>review_count</item>
+        <item>distance</item>
+    </string-array>
+
 </resources>
