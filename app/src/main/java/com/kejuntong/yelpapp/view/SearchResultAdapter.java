@@ -11,18 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kejuntong.yelpapp.R;
-import com.kejuntong.yelpapp.model.data.Business;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.kejuntong.yelpapp.view.SearchResultItem.TYPE_CATEGORY_HEADER;
+
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> {
 
-    private List<Business> mData;
+    private List<SearchResultItem> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    SearchResultAdapter(Context context, List<Business> data) {
+    SearchResultAdapter(Context context, List<SearchResultItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -30,14 +31,29 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_search_result, parent, false);
+        View view;
+        if (viewType == TYPE_CATEGORY_HEADER) {
+            view = mInflater.inflate(R.layout.item_search_category_header, parent, false);
+        } else {
+            view = mInflater.inflate(R.layout.item_search_result, parent, false);
+        }
         return new ViewHolder(view);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return mData.get(position).getType();
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.businessName.setText(mData.get(position).getName());
-        Picasso.get().load(mData.get(position).getImageUrl()).into(holder.businessImage);
+
+        if (getItemViewType(position) == TYPE_CATEGORY_HEADER) {
+            holder.categoryHeader.setText(mData.get(position).getHeader().getTitle());
+        } else {
+            holder.businessName.setText(mData.get(position).getBusiness().getName());
+            Picasso.get().load(mData.get(position).getBusiness().getImageUrl()).into(holder.businessImage);
+        }
     }
 
     @Override
@@ -45,12 +61,17 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return mData.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView categoryHeader;
+
         TextView businessName;
         ImageView businessImage;
 
         ViewHolder(View itemView) {
             super(itemView);
+            categoryHeader = itemView.findViewById(R.id.category_header);
+
             businessName = itemView.findViewById(R.id.info_text);
             businessImage = itemView.findViewById(R.id.business_image);
             itemView.setOnClickListener(this);
@@ -60,10 +81,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
-    }
-
-    Business getItem(int id) {
-        return mData.get(id);
     }
 
     void setClickListener(ItemClickListener itemClickListener) {

@@ -12,11 +12,13 @@ import com.kejuntong.yelpapp.R;
 import com.kejuntong.yelpapp.model.connection.YelpFusionApi;
 import com.kejuntong.yelpapp.model.connection.YelpFusionApiFactory;
 import com.kejuntong.yelpapp.model.data.Business;
+import com.kejuntong.yelpapp.model.data.Category;
 import com.kejuntong.yelpapp.model.data.SearchResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +26,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kejuntong.yelpapp.view.SearchResultItem.TYPE_CATEGORY_HEADER;
+
 public class SearchResultActivity extends AppCompatActivity implements SearchResultAdapter.ItemClickListener{
 
     RecyclerView recyclerView;
     SearchResultAdapter adapter;
-    List<Business> data = new ArrayList<>();
+    List<SearchResultItem> data = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return position == 3 ? manager.getSpanCount() : 1;
+                return adapter.getItemViewType(position) == TYPE_CATEGORY_HEADER ? manager.getSpanCount() : 1;
             }
         });
 
@@ -70,7 +74,6 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
         Map<String, String> params = new HashMap<>();
 
-// general params
         params.put("term", "indian food");
         params.put("location", "NYC");
 
@@ -80,14 +83,36 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 SearchResponse searchResponse = response.body();
-                // Update UI text with the searchResponse.
+
+                // to group item according to category
+                Map<String, List<SearchResultItem>> map = new HashMap<>();
+                for (Business business : searchResponse.getBusinesses()) {
+                    for (Category category : business.getCategories()) {
+                        String categoryTitle = category.getTitle();
+                        if (!map.containsKey(categoryTitle)) {
+                            List<SearchResultItem> list = new ArrayList<>();
+                            list.add(new SearchResultItem(business));
+                            map.put(categoryTitle, list);
+                        } else {
+                            map.get(categoryTitle).add(new SearchResultItem(business));
+                        }
+                    }
+                }
+
                 data.clear();
-                data.addAll(searchResponse.getBusinesses());
+
+                for (Map.Entry<String, List<SearchResultItem>> entry : map.entrySet()) {
+                    String categoryName = entry.getKey();
+                    List<SearchResultItem> businessList = entry.getValue();
+                    data.add(new SearchResultItem(new SearchCategoryHeader(categoryName, businessList.size())));
+                    data.addAll(businessList);
+                }
+
                 adapter.notifyDataSetChanged();
             }
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-                // HTTP error happened, do something to handle it.
+
             }
         };
 
