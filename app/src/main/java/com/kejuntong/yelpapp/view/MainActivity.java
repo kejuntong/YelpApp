@@ -2,6 +2,7 @@ package com.kejuntong.yelpapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -33,11 +34,14 @@ public class MainActivity extends AppCompatActivity {
         testButton = findViewById(R.id.test_button);
 
         testButton.setOnClickListener(v -> {
-            try {
-                testCall();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                testCall();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
+            startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+
         });
 
 
