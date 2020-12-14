@@ -61,7 +61,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return mData.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView categoryHeader;
 

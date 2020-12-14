@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">YelpApp</string>
-
-    <!--TODO: need encrypt and obfuscate-->
-    <string name="api_key">DPM5KiXHlyfN2pquXd0EaDbDtC2rhc3MHXIshaIdWyAcHLxtY2kt6y88EwGzb-YpWNq2khDtoYLqmasFDvOUOpeyGHNxpxzZIdYpKmkLIl85BCJ2U_3xq5J6SXHVX3Yx</string>
-
     <string name="search_term">search term: </string>
     <string name="search_term_hint">please enter search term</string>
     <string name="search_location">search location: </string>
@@ -18,5 +14,8 @@
         <item>review_count</item>
         <item>distance</item>
     </string-array>
+
+    <string name="restaurant_name">Restaurant name: </string>
+    <string name="restaurant_location">Restaurant location: </string>
 
 </resources>
