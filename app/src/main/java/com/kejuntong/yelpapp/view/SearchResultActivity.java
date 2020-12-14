@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
     SearchResultAdapter adapter;
     Spinner spinner;
     Button searchButton;
+    ProgressBar progressBar;
     List<SearchResultItem> data = new ArrayList<>();
 
     SearchResultViewModel viewModel;
@@ -45,14 +47,12 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
     @Override
     public void onItemClick(View view, int position) {
-
         SearchResultItem item = data.get(position);
         if (item.getType() == TYPE_SEARCH_ITEM) {
             Intent intent = new Intent(SearchResultActivity.this, BusinessDetailsActivity.class);
             intent.putExtra(Constants.BUSINESS_ID, data.get(position).getBusiness().getId());
             startActivity(intent);
         }
-
     }
 
     private void setupViews() {
@@ -61,6 +61,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         recyclerView = findViewById(R.id.search_result_list);
         spinner = findViewById(R.id.sort_spinner);
         searchButton = findViewById(R.id.search_button);
+        progressBar = findViewById(R.id.progress_bar);
 
         GridLayoutManager manager = new GridLayoutManager(this, 3);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -80,6 +81,8 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         viewModel = new SearchResultViewModel();
         viewModel.getSearchResult().observe(SearchResultActivity.this, searchResultItems -> {
             data.clear();
+            adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
             data.addAll(searchResultItems);
             adapter.notifyDataSetChanged();
         });
@@ -87,6 +90,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
     private void setupSearchButton() {
         searchButton.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
             viewModel.search(searchTerm.getText().toString(), searchLocation.getText().toString(), spinner.getSelectedItem().toString());
         });
     }

@@ -105,4 +105,13 @@
         android:layout_below="@+id/search_line3"
         android:layout_marginTop="10dp"/>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/search_line3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
 </RelativeLayout>

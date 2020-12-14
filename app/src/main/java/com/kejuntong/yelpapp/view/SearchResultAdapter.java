@@ -6,13 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.kejuntong.yelpapp.R;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import static com.kejuntong.yelpapp.view.SearchResultItem.TYPE_CATEGORY_HEADER;
@@ -49,10 +46,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (getItemViewType(position) == TYPE_CATEGORY_HEADER) {
-            holder.categoryHeader.setText(mData.get(position).getHeader().getTitle());
+            String categoryTitle = mData.get(position).getHeader().getTitle();
+            int itemCount = mData.get(position).getHeader().getCount();
+            holder.categoryHeader.setText(categoryTitle + " (" + itemCount + ")");
         } else {
             holder.businessName.setText(mData.get(position).getBusiness().getName());
-            Picasso.get().load(mData.get(position).getBusiness().getImageUrl()).into(holder.businessImage);
+            String imageUrl = mData.get(position).getBusiness().getImageUrl();
+            if (!imageUrl.isEmpty()) {
+                Picasso.get().load(mData.get(position).getBusiness().getImageUrl()).into(holder.businessImage);
+            }
         }
     }
 
@@ -71,7 +73,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             super(itemView);
             categoryHeader = itemView.findViewById(R.id.category_header);
 
-            businessName = itemView.findViewById(R.id.info_text);
+            businessName = itemView.findViewById(R.id.business_name);
             businessImage = itemView.findViewById(R.id.business_image);
             itemView.setOnClickListener(this);
         }

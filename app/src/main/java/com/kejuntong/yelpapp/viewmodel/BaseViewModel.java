@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class BaseViewModel extends ViewModel {
 
+    // TODO: need to encrypt and obfuscate
     protected static final String API_KEY = "DPM5KiXHlyfN2pquXd0EaDbDtC2rhc3MHXIshaIdWyAcHLxtY2kt6y88EwGzb-YpWNq2khDtoYLqmasFDvOUOpeyGHNxpxzZIdYpKmkLIl85BCJ2U_3xq5J6SXHVX3Yx";
     protected YelpFusionApi yelpFusionApi;
 

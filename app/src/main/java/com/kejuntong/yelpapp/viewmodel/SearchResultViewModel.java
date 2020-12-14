@@ -4,17 +4,13 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.kejuntong.yelpapp.model.connection.YelpFusionApi;
-import com.kejuntong.yelpapp.model.connection.YelpFusionApiFactory;
 import com.kejuntong.yelpapp.model.data.Business;
 import com.kejuntong.yelpapp.model.data.Category;
 import com.kejuntong.yelpapp.model.data.SearchResponse;
 import com.kejuntong.yelpapp.view.SearchCategoryHeader;
 import com.kejuntong.yelpapp.view.SearchResultItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +78,11 @@ public class SearchResultViewModel extends BaseViewModel {
             }
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-
+                // when failure, just post a fake header as "no result (0)"
+                // not a good approach
+                List<SearchResultItem> data = new ArrayList<>();
+                data.add(new SearchResultItem(new SearchCategoryHeader("no result", 0)));
+                searchResultLiveData.postValue(data);
             }
         };
 
